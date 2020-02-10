@@ -19,10 +19,10 @@
         app:layout_constraintVertical_bias="0.239" />
 
     <ImageView
-        android:id="@+id/Dice2"
+        android:id="@+id/Dice4"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/dice_2"
+        android:src="@drawable/dice_4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
