@@ -71,14 +71,9 @@ public class RollDiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                changeDiceFace();// We dont need 2 functions for both faces, just one function that will change the faces of both dice
 
-                if(turnTotal < 50){
-                    Turn_Total.setText("Turn total: " + turnTotal);
-                }
-                else if (turnTotal >= 50){
-
-                }
+                changeDiceFace();
+                checkWinner();
 
             }
         });
@@ -111,17 +106,20 @@ public class RollDiceActivity extends AppCompatActivity {
         Player2_Score.setText("Player 2 total: " + player2Score);
         Turn_Total.setText("Turn total: " + turnTotal);
 
-        if(players[randomNum].equals(findViewById(R.id.player1))){
+        if(players[randomNum].equals(Player1_Score)){
             currentPlayer = "Player 1";
             Current_Player.setText("Current Player: " + currentPlayer);
 
         }
-        else if(players[randomNum].equals(findViewById(R.id.player2))){
+        else if(players[randomNum].equals(Player2_Score)){
             currentPlayer = "Player 2";
             Current_Player.setText("Current Player: " + currentPlayer);
 
 
         }
+
+
+        System.out.println("Being called again");
 
 
 
@@ -135,34 +133,43 @@ public class RollDiceActivity extends AppCompatActivity {
         int randomNumber = rng.nextInt(6) + 1;
         int randomNumber2 = rng.nextInt(6) + 1;
 
-        boolean isOne = false, isOne2 = false;
+        boolean isOne = false, isOne2 = false, bothOne = false;
 
+        int dice1 = 101, dice2 = 100;
+        boolean bothFaces = false;
 
+        holdButton.setEnabled(true);
 
         switch(randomNumber){
             case 1:
                 Dice_1.setImageResource(R.drawable.dice_1);
                 isOne = true;
+                dice1 = 1;
                 turnTotal += 1;
                 break;
             case 2:
                 Dice_1.setImageResource(R.drawable.dice_2);
+                dice1 = 2;
                 turnTotal += 2;
                 break;
             case 3:
                 Dice_1.setImageResource(R.drawable.dice_3);
+                dice1 = 3;
                 turnTotal += 3;
                 break;
             case 4:
                 Dice_1.setImageResource(R.drawable.dice_4);
+                dice1 = 4;
                 turnTotal += 4;
                 break;
             case 5:
                 Dice_1.setImageResource(R.drawable.dice_5);
+                dice1 = 5;
                 turnTotal += 5;
                 break;
             case 6:
                 Dice_1.setImageResource(R.drawable.dice_6);
+                dice1 = 6;
                 turnTotal += 6;
                 break;
 
@@ -172,43 +179,100 @@ public class RollDiceActivity extends AppCompatActivity {
             case 1:
                 Dice_4.setImageResource(R.drawable.dice_1);
                 isOne2 = true;
+                dice2 = 1;
                 turnTotal += 1;
                 break;
             case 2:
                 Dice_4.setImageResource(R.drawable.dice_2);
+                dice2 = 2;
                 turnTotal += 2;
                 break;
             case 3:
                 Dice_4.setImageResource(R.drawable.dice_3);
+                dice2 = 3;
                 turnTotal += 3;
                 break;
             case 4:
                 Dice_4.setImageResource(R.drawable.dice_4);
+                dice2 = 4;
                 turnTotal += 4;
                 break;
             case 5:
                 Dice_4.setImageResource(R.drawable.dice_5);
+                dice2 = 5;
                 turnTotal += 5;
                 break;
             case 6:
                 Dice_4.setImageResource(R.drawable.dice_6);
+                dice2 = 6;
                 turnTotal += 6;
                 break;
 
 
         }
 
-        if(isOne && isOne2){
+        if(dice1 == dice2){
+            if(!(dice1 == 1 && dice2 == 1)){
+                bothFaces = true;
+            }
+        }
 
+
+
+
+        if(bothFaces) {
+            if (currentPlayer.equals("Player 1")) {
+                turnTotal += player1Score;
+                player1Score = 0;
+                Turn_Total.setText("Turn total: " + turnTotal);
+            } else if (currentPlayer.equals("Player 2")) {
+                turnTotal += player2Score;
+                player2Score = 0;
+                Turn_Total.setText("Turn total: " + turnTotal);
+            }
+
+            holdButton.setEnabled(false);
+        }
+        else if(isOne && isOne2){
+            bothOne = true;
             turnTotal = 0;
             Turn_Total.setText("Turn total: " + turnTotal);
+            resetPlayerScore();
+            changePlayer();
+
+        }
+        else if (!bothOne &&(isOne || isOne2)){
+            turnTotal = 0;
+            Turn_Total.setText("Turn total: " + turnTotal);
+            changePlayer();
 
         }
 
 
     }
 
+    private void checkWinner(){
 
+        if(player1Score >= 50){
+            System.out.println("Player 1 wins!");
+        }
+        else if(player2Score >= 50){
+            System.out.println("Player 2 wins!");
+        }
+
+    }
+
+    private void changePlayer(){
+
+        if(currentPlayer.equals("Player 1")){
+            currentPlayer = "Player 2";
+            Current_Player.setText("Current player: " + currentPlayer);
+        }
+        else if(currentPlayer.equals("Player 2")){
+            currentPlayer = "Player 1";
+            Current_Player.setText("Current player: " + currentPlayer);
+        }
+    }
 
     private void Hold_Button(){
 
@@ -217,17 +281,21 @@ public class RollDiceActivity extends AppCompatActivity {
 
         if(currentPlayer.equals("Player 1")){
                 player1Score += turnTotal;
-                currentPlayer = "Player 2";
-                Current_Player.setText("Current player: " + currentPlayer);
+                updateScore();
+                changePlayer();
+                System.out.println(currentPlayer);
+
 
         }
         else if(currentPlayer.equals("Player 2")){
                 player2Score += turnTotal;
-                currentPlayer = "Player 1";
-                Current_Player.setText("Current player: " + currentPlayer);
+                updateScore();
+                changePlayer();
+                System.out.println(currentPlayer);
+
 
         }
-        updateScore();
+
         turnTotal = 0;
 
 
@@ -241,6 +309,22 @@ public class RollDiceActivity extends AppCompatActivity {
 
         }
         if(currentPlayer.equals("Player 2")){
+            Player2_Score.setText("Player 2 total: " + player2Score);
+        }
+
+    }
+
+    private void resetPlayerScore(){
+
+        if(currentPlayer.equals("Player 1")){
+            player1Score = 0;
+
+            Player1_Score.setText("Player 1 total: " + player1Score);
+        }
+        else if(currentPlayer.equals("Player 2")){
+
+            player2Score = 0;
+
             Player2_Score.setText("Player 2 total: " + player2Score);
         }
 
