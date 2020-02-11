@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/player1"
-        android:layout_width="95dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Player 1 Total: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.049"

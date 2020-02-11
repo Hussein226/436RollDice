@@ -42,6 +42,7 @@ public class RollDiceActivity extends AppCompatActivity {
 
         Dice_1 = (ImageView) findViewById(R.id.Dice1);
         Dice_4 = (ImageView) findViewById(R.id.Dice4);
+        boolean SetUp = true;
 
 
 //        diceArray[0] = Dice_1;
@@ -62,10 +63,13 @@ public class RollDiceActivity extends AppCompatActivity {
         Current_Player = (TextView) findViewById(R.id.currPlayer);
         Turn_Total = (TextView) findViewById(R.id.turnTotal);
 
+
+
+        setUpGame();
+
         RollDice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 changeDiceFace();// We dont need 2 functions for both faces, just one function that will change the faces of both dice
 
@@ -85,6 +89,44 @@ public class RollDiceActivity extends AppCompatActivity {
                 Hold_Button();
             }
         });
+
+    }
+
+    private void setUpGame(){
+        TextView[] players = new TextView[2];
+
+        player1Score = 0;
+        player2Score = 0;
+        players[0] = Player1_Score;
+        players[1] = Player2_Score;
+
+        Random randomStart = new Random();
+
+        int randomNum = randomStart.nextInt(2)+0;
+
+
+
+
+        Player1_Score.setText("Player 1 total: " + player1Score);
+        Player2_Score.setText("Player 2 total: " + player2Score);
+        Turn_Total.setText("Turn total: " + turnTotal);
+
+        if(players[randomNum].equals(findViewById(R.id.player1))){
+            currentPlayer = "Player 1";
+            Current_Player.setText("Current Player: " + currentPlayer);
+
+        }
+        else if(players[randomNum].equals(findViewById(R.id.player2))){
+            currentPlayer = "Player 2";
+            Current_Player.setText("Current Player: " + currentPlayer);
+
+
+        }
+
+
+
+
+
 
     }
 
@@ -170,11 +212,37 @@ public class RollDiceActivity extends AppCompatActivity {
 
     private void Hold_Button(){
 
-        turnTotal = 0;
 
         Turn_Total.setText("Turn total: 0");
 
+        if(currentPlayer.equals("Player 1")){
+                player1Score += turnTotal;
+                currentPlayer = "Player 2";
+                Current_Player.setText("Current player: " + currentPlayer);
 
+        }
+        else if(currentPlayer.equals("Player 2")){
+                player2Score += turnTotal;
+                currentPlayer = "Player 1";
+                Current_Player.setText("Current player: " + currentPlayer);
+
+        }
+        updateScore();
+        turnTotal = 0;
+
+
+
+    }
+
+    private void updateScore(){
+
+        if(currentPlayer.equals("Player 1")){
+            Player1_Score.setText("Player 1 total: " + player1Score);
+
+        }
+        if(currentPlayer.equals("Player 2")){
+            Player2_Score.setText("Player 2 total: " + player2Score);
+        }
 
     }
 }
