@@ -73,7 +73,7 @@ public class RollDiceActivity extends AppCompatActivity {
 
 
                 changeDiceFace();
-                checkWinner();
+                //checkWinner();
 
             }
         });
@@ -120,10 +120,6 @@ public class RollDiceActivity extends AppCompatActivity {
 
 
         System.out.println("Being called again");
-
-
-
-
 
 
     }
@@ -231,6 +227,7 @@ public class RollDiceActivity extends AppCompatActivity {
                 Turn_Total.setText("Turn total: " + turnTotal);
             }
 
+
             holdButton.setEnabled(false);
         }
         else if(isOne && isOne2){
@@ -246,6 +243,9 @@ public class RollDiceActivity extends AppCompatActivity {
             Turn_Total.setText("Turn total: " + turnTotal);
             changePlayer();
 
+        }
+        else{
+            Turn_Total.setText("Turn total: " + turnTotal);
         }
 
 
