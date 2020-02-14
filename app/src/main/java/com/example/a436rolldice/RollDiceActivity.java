@@ -255,6 +255,7 @@ public class RollDiceActivity extends AppCompatActivity {
 
         if(player1Score >= 50){
             System.out.println("Player 1 wins!");
+
         }
         else if(player2Score >= 50){
             System.out.println("Player 2 wins!");
@@ -329,4 +330,6 @@ public class RollDiceActivity extends AppCompatActivity {
         }
 
     }
+
+
 }
